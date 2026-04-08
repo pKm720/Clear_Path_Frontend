@@ -15,10 +15,10 @@ const MapView = () => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [styleLoadedTimestamp, setStyleLoadedTimestamp] = useState(0);
-  
+
   // Store hooks
-  const { 
-    routes, selectedRouteIndex, showHeatmap, 
+  const {
+    routes, selectedRouteIndex, showHeatmap,
     currentPosition, isNavigating, is3D, isDarkMode,
     startCoord, endCoord,
     setStartCoord, setEndCoord, activeInput, setActiveInput
@@ -52,7 +52,7 @@ const MapView = () => {
       const setupCustomLayers = () => {
         if (!map.current) return;
         // Check if layers were dropped
-        if (map.current.getSource('sensors')) return; 
+        if (map.current.getSource('sensors')) return;
 
         // 1. Initialise Heatmap Source
         map.current.addSource('sensors', {
@@ -62,7 +62,7 @@ const MapView = () => {
 
         // Dynamically reduce heatmap spreading on mobile screens 
         const isMobile = window.innerWidth < 768;
-        const dynamicRadius = isMobile 
+        const dynamicRadius = isMobile
           ? ['interpolate', ['linear'], ['zoom'], 0, 70, 10, 85, 15, 150]
           : ['interpolate', ['linear'], ['zoom'], 0, 120, 10, 150, 15, 300];
 
@@ -111,7 +111,7 @@ const MapView = () => {
           type: 'geojson',
           data: { type: 'FeatureCollection', features: [] }
         });
-        
+
         map.current.addLayer({
           id: 'route-casing',
           type: 'line',
@@ -323,17 +323,17 @@ const MapView = () => {
     let bearing = 0;
 
     for (let i = 0; i < path.length - 1; i++) {
-        const p1 = path[i];
-        const p2 = path[i+1];
-        // For simplicity in a web-demo, find nearest node. 
-        // Real snapping would project onto segment, but node-snapping is safe for now.
-        const d = getDistance(pos.lat, pos.lon, p1.lat, p1.lon);
-        if (d < minD) {
-            minD = d;
-            snapped = p1;
-            // Simple bearing calculation
-            bearing = Math.atan2(p2.lon - p1.lon, p2.lat - p1.lat) * 180 / Math.PI;
-        }
+      const p1 = path[i];
+      const p2 = path[i + 1];
+      // For simplicity in a web-demo, find nearest node. 
+      // Real snapping would project onto segment, but node-snapping is safe for now.
+      const d = getDistance(pos.lat, pos.lon, p1.lat, p1.lon);
+      if (d < minD) {
+        minD = d;
+        snapped = p1;
+        // Simple bearing calculation
+        bearing = Math.atan2(p2.lon - p1.lon, p2.lat - p1.lat) * 180 / Math.PI;
+      }
     }
     return { ...snapped, bearing, distance: minD };
   };
@@ -341,7 +341,7 @@ const MapView = () => {
   // Update User Location visually
   useEffect(() => {
     if (!map.current || !mapLoaded || !currentPosition) return;
-    
+
     const rawSource = map.current.getSource('user-location');
     const snapSource = map.current.getSource('snapped-location');
     const currentRoute = routes[selectedRouteIndex];
@@ -355,10 +355,10 @@ const MapView = () => {
 
     if (snapSource && isNavigating && currentRoute?.path) {
       const snap = getSnappedPoint(currentPosition, currentRoute.path);
-      
+
       // Only snap if within 30 meters, else user is truly off-route
       const finalPos = snap.distance < 30 ? [snap.lon, snap.lat] : [currentPosition.lon, currentPosition.lat];
-      
+
       snapSource.setData({
         type: 'Feature',
         properties: { bearing: snap.bearing },
@@ -438,7 +438,7 @@ const MapView = () => {
           if (map.current.getLayer('route-casing')) map.current.setPaintProperty('route-casing', 'line-dasharray', [1, 0]);
         }
       };
-      
+
       // Reset before animation
       map.current.setPaintProperty('route-line', 'line-dasharray', [0, 1]);
       if (map.current.getLayer('route-casing')) map.current.setPaintProperty('route-casing', 'line-dasharray', [0, 1]);
@@ -455,10 +455,10 @@ const MapView = () => {
       // Map readings into GeoJSON features, preserving the 'isVirtual' flag
       const features = (sensorData.data || sensorData).map(sensor => ({
         type: 'Feature',
-        properties: { 
-          aqi: sensor.aqi, 
+        properties: {
+          aqi: sensor.aqi,
           stationName: sensor.stationName,
-          isVirtual: sensor.isVirtual || false 
+          isVirtual: sensor.isVirtual || false
         },
         geometry: { type: 'Point', coordinates: [sensor.lng, sensor.lat] }
       }));
@@ -502,11 +502,11 @@ const MapView = () => {
     if (map.current.getLayer('aqi-heat')) {
       map.current.setLayoutProperty('aqi-heat', 'visibility', heatVisibility);
     }
-    
+
     // Physical and Virtual sensor pins remain as permanent navigational anchors
     if (map.current.getLayer('aqi-points')) {
       map.current.setLayoutProperty('aqi-points', 'visibility', 'visible');
-      
+
       // Visual distinction: Indigo stroke for Virtual Sensors, White for Physical
       map.current.setPaintProperty('aqi-points', 'circle-stroke-color', [
         'case',
@@ -525,7 +525,7 @@ const MapView = () => {
         map.current.off('click', 'aqi-points', handleSensorClick);
       }
     };
-    
+
   }, [sensorData, showHeatmap, mapLoaded, styleLoadedTimestamp]);
 
   return (
