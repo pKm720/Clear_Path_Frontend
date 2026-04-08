@@ -71,7 +71,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <div
         dir="ltr"
-        className={`w-screen h-screen overflow-hidden fixed inset-0 transition-colors duration-700 bg-slate-50 dark:bg-[#0B1120]`}
+        className={`w-screen h-[100dvh] overflow-hidden fixed inset-0 transition-colors duration-700 bg-slate-50 dark:bg-[#0B1120]`}
       >
         {/* Subtle glowing orbs for premium feel */}
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-400/20 dark:bg-blue-600/20 blur-[120px] rounded-full pointer-events-none z-0" />
@@ -130,7 +130,7 @@ function App() {
 
         {/* Route Options Shelf - Bottom Horizontal Bar */}
         {!isNavigating && !isArrived && (routes.length > 0 || isLoading) && (
-          <div className="absolute bottom-2 md:bottom-6 left-2 right-2 md:left-[350px] md:right-4 z-20 flex flex-col gap-2 animate-in slide-in-from-bottom-10 duration-500">
+          <div className="absolute bottom-6 md:bottom-8 pb-safe left-2 right-2 md:left-[350px] md:right-4 z-20 flex flex-col gap-2 animate-in slide-in-from-bottom-10 duration-500">
             <div className="flex items-center justify-between px-2">
               <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Select Your Route</p>
               {isLoading && <div className="text-[8px] font-bold text-blue-500 animate-pulse uppercase">Searching...</div>}

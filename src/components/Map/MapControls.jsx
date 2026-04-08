@@ -11,7 +11,7 @@ const MapControls = ({ isMenuOpen, isShelfOpen }) => {
   return (
     <div className={`md:hidden absolute left-1/2 -translate-x-1/2 z-30 flex flex-row gap-3 items-center pointer-events-auto transition-all duration-500 ease-in-out ${
       isMenuOpen ? 'opacity-0 pointer-events-none scale-95 translate-y-4' : 'opacity-100 scale-100 translate-y-0'
-    } ${isShelfOpen ? 'bottom-52' : 'bottom-28'}`}>
+    } ${isShelfOpen ? 'bottom-64' : 'bottom-16 md:bottom-28'}`}>
       <button
         onClick={toggleDarkMode}
         className={`flex items-center justify-center w-10 h-10 rounded-full border transition-all duration-300 text-lg shadow-lg active:scale-95 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md ${

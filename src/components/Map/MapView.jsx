@@ -60,6 +60,12 @@ const MapView = () => {
           data: { type: 'FeatureCollection', features: [] }
         });
 
+        // Dynamically reduce heatmap spreading on mobile screens 
+        const isMobile = window.innerWidth < 768;
+        const dynamicRadius = isMobile 
+          ? ['interpolate', ['linear'], ['zoom'], 0, 70, 10, 85, 15, 150]
+          : ['interpolate', ['linear'], ['zoom'], 0, 120, 10, 150, 15, 300];
+
         // 2. Add Heatmap Layer
         map.current.addLayer({
           id: 'aqi-heat',
@@ -78,7 +84,7 @@ const MapView = () => {
               0.8, '#f97316',             // Orange Core
               1, '#dc2626'                // Red Core
             ],
-            'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 120, 10, 150, 15, 300],
+            'heatmap-radius': dynamicRadius,
             'heatmap-opacity': 0.8
           }
         });
